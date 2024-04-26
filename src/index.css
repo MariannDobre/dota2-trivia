@@ -1,0 +1,214 @@
+@import url('https://fonts.googleapis.com/css2?family=Hahmlet:wght@100..900&display=swap');
+
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --clr-white: #fff;
+
+  --clr-gray-200: #e5e7eb;
+  --clr-gray-300: #d1d5db;
+  --clr-gray-400: #9ca3af;
+  --clr-gray-500: #6b7280;
+  --clr-gray-700: #374151;
+  --clr-gray-800: #1f2937;
+  --clr-gray-900: #111827;
+
+  --clr-green-300: #86efac;
+  --clr-green-700: #15803d;
+
+  --clr-sky-200: #bae6fd;
+  --clr-sky-300: #7dd3fc;
+  --clr-sky-400: #38bdf8;
+  --clr-sky-500: #0ea5e9;
+  --clr-sky-700: #0369a1;
+
+  --clr-black: #000;
+  --clr-black-light: #0a0a0a;
+
+  --font-fam-main: 'Hahmlet', serif;
+
+  --font-size-sm: 1.2rem;
+  --font-size-base: 1.6rem;
+  --font-size-md: 2rem;
+  --font-size-lg: 2.4rem;
+  --font-size-xl: 2.8rem;
+  --font-size-2xl: 3.2rem;
+  --font-size-3xl: 3.6rem;
+
+  --font-weight-100: 100;
+  --font-weight-200: 200;
+  --font-weight-300: 300;
+  --font-weight-400: 400;
+  --font-weight-500: 500;
+  --font-weight-600: 600;
+  --font-weight-700: 700;
+
+  --rounded-xs: 0.4rem;
+  --rounded-sm: 0.8rem;
+
+  --ltr-spacing-xs: 0.1rem;
+  --ltr-spacing-sm: 0.15rem;
+  --ltr-spacing-md: 0.2rem;
+
+  --word-spacing-xs: 0.1rem;
+  --word-spacing-sm: 0.15rem;
+  --word-spacing-md: 0.2rem;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-family: var(--font-fam-main);
+  background-color: var(--clr-gray-900);
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* SUBMITED ANSWER STYLES */
+.selected-answer:nth-child(2n + 1) {
+  transform: translateX(-0.6rem);
+}
+
+.selected-answer:nth-child(2n) {
+  transform: translateX(0.6rem);
+}
+
+/* STYLES FOR THE CHOOSING THEME MENU */
+.menu-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition: all 0.35s ease;
+}
+
+.menu-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-2.4rem);
+  transition: all 0.35s ease;
+}
+
+/*  */
+.nav__menu {
+  --padding-tablet: 1.2rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  list-style: none;
+}
+
+@media screen and (max-width: 1364px), screen and (max-height: 864px) {
+}
+
+@media screen and (max-width: 1024px), screen and (max-height: 724px) {
+}
+
+@media screen and (max-width: 768px), screen and (max-height: 664) {
+  .nav__menu {
+    position: absolute;
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    top: 100%;
+    left: 0;
+    background-color: var(--clr-gray-700);
+    padding: var(--padding-tablet);
+    z-index: 100;
+    transform: translateY(0);
+    transition: all 0.35s ease;
+  }
+
+  .nav__menu.nav__menu-show {
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(-2.4rem);
+    pointer-events: none;
+  }
+}
+
+@media screen and (max-width: 480px) {
+}
+
+/* TOGGLE FOR LIGHT-MODE AND DARK-MODE */
+.light-mode {
+  --clr-white: #fff;
+
+  --clr-gray-200: #e5e7eb;
+  --clr-gray-300: #d1d5db;
+  --clr-gray-400: #9ca3af;
+  --clr-gray-500: #6b7280;
+  --clr-gray-700: #374151;
+  --clr-gray-800: #1f2937;
+  --clr-gray-900: #111827;
+
+  --clr-green-300: #86efac;
+  --clr-green-700: #15803d;
+
+  --clr-sky-200: #bae6fd;
+  --clr-sky-300: #7dd3fc;
+  --clr-sky-400: #38bdf8;
+  --clr-sky-500: #0ea5e9;
+  --clr-sky-700: #0369a1;
+
+  --clr-black: #000;
+  --clr-black-light: #0a0a0a;
+}
+
+.dark-mode {
+  --clr-white: #fff;
+
+  --clr-gray-200: #d1d5db;
+  --clr-gray-300: #9ca3af;
+  --clr-gray-400: #6b7280;
+  --clr-gray-500: #4b5563;
+  --clr-gray-700: #1f2937;
+  --clr-gray-800: #111827;
+  --clr-gray-900: #030712;
+
+  --clr-green-300: #4ade80;
+  --clr-green-700: #166534;
+
+  --clr-sky-200: #7dd3fc;
+  --clr-sky-300: #38bdf8;
+  --clr-sky-400: #0ea5e9;
+  --clr-sky-500: #0284c7;
+  --clr-sky-700: #075985;
+
+  --clr-black: #000;
+  --clr-black-light: #0a0a0a;
+}
+
+/* SCROLL BAR STYLES */
+::-webkit-scrollbar {
+  width: 1rem;
+  height: 1rem;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--clr-gray-700);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--clr-gray-500);
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--clr-gray-900);
+}
+
+::-webkit-scrollbar-corner {
+  background-color: var(--clr-gray-900);
+}
