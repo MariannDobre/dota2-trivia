@@ -1,4 +1,4 @@
-# 🧠 Dota-Quiz
+# 🧠 Dota2 Trivia
 
 - **Technologies used**:
   - React
