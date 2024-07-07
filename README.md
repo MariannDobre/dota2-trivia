@@ -1,6 +1,6 @@
 ### Dota 2 Trivia
 
-**Trivia game based on Dota 2 game with questions about the game items, heroes, mechanics and so on. Give it a try [here]().**
+**Trivia game based on Dota 2 game with questions about the game items, heroes, mechanics and so on. Give it a try [here](https://dota-2-trivia.netlify.app/).**
 
 #
 
