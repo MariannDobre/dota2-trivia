@@ -816,7 +816,7 @@ function Levels({
               <FaCheck />
               &nbsp;Up-to-date:
             </span>
-            synced with patch 7.35D
+            synced with patch 7.36C
           </Details>
 
           <Details>

@@ -7,6 +7,8 @@ import { FaDisplay } from 'react-icons/fa6';
 import { useParams } from 'react-router-dom';
 import Tooltip from './tooltip';
 import { useClickOutside } from '../hooks/useClickOutside';
+import useLazyLoadBackground from '../hooks/useLazyLoadBackground';
+import BackgroundPlaceholder from './backgroundPlaceholder';
 
 type PropsTypes = {
   themeValue: string | boolean;
@@ -15,12 +17,25 @@ type PropsTypes = {
   setStartTheLevel: React.Dispatch<SetStateAction<boolean>>;
 };
 
+type BackgroundTypes = {
+  $backgroundPath: string;
+};
+
+//
 const svgThemeStyles = {
   color: 'var(--clr-sky-200)',
 };
 
+const SBannerWrapper = styled.div`
+  --width: 100%;
+  --max-width: 100%;
+
+  width: var(--width);
+  max-width: var(--max-width);
+`;
+
 // Styles for the main component
-const StyledBanner = styled.div`
+const StyledBanner = styled.div<BackgroundTypes>`
   --max-width: 100%;
   --min-height: 44rem;
   --min-height-laptop-lg: 40rem;
@@ -34,7 +49,7 @@ const StyledBanner = styled.div`
       rgba(0, 0, 0, 0.4),
       rgba(0, 0, 0, 0.6)
     ),
-    url('/images/ancient.jpg') no-repeat;
+    url(${(props) => props.$backgroundPath}) no-repeat;
   background-size: cover;
   background-position: center;
   max-width: var(--max-width);
@@ -331,6 +346,11 @@ function Banner({
   startTheLevel,
   setStartTheLevel,
 }: PropsTypes): React.ReactElement {
+  const backgorundImage = '/images/ancient.jpg';
+  const { isBackgroundLoaded, observedElement } = useLazyLoadBackground({
+    backgroundPath: backgorundImage,
+    threshold: 0.5,
+  });
   const { levelName } = useParams<{ levelName: string }>();
   const [themeMenu, setThemeMenu] = useState<boolean>(false);
   const menuRef = useClickOutside(() => {
@@ -355,83 +375,98 @@ function Banner({
   }, [levelName, setStartTheLevel]);
 
   return (
-    <StyledBanner>
-      <Details>
-        <PlayButton
-          onClick={handleStartLevel}
-          disabled={!levelName || startTheLevel}
-        >
-          {startTheLevel ? (
-            'In progress...'
-          ) : (
-            <>
-              <IoMdPlay />
-              &nbsp;Play
-            </>
-          )}
-        </PlayButton>
-
-        <Tooltip tooltip={'Change app theme'}>
-          <SettingsButton onClick={handleThemeMenu}>
-            <LuMoonStar />
-          </SettingsButton>
-
-          <ThemeMenu
-            ref={menuRef}
-            className={themeMenu ? 'menu-visible' : 'menu-hidden'}
-          >
-            <ThemeOption
-              style={{
-                color: themeValue === 'light-mode' ? 'var(--clr-sky-300)' : '',
-              }}
-              onClick={() => handleChangeTheme('light-mode')}
+    <SBannerWrapper ref={observedElement}>
+      {isBackgroundLoaded ? (
+        <StyledBanner $backgroundPath={backgorundImage}>
+          <Details>
+            <PlayButton
+              onClick={handleStartLevel}
+              disabled={!levelName || startTheLevel}
             >
-              <LuSun
-                style={themeValue === 'light-mode' ? svgThemeStyles : {}}
-              />
-              Light
-            </ThemeOption>
+              {startTheLevel ? (
+                'In progress...'
+              ) : (
+                <>
+                  <IoMdPlay />
+                  &nbsp;Play
+                </>
+              )}
+            </PlayButton>
 
-            <ThemeOption
-              style={{
-                color: themeValue === 'dark-mode' ? 'var(--clr-sky-300)' : '',
-              }}
-              onClick={() => handleChangeTheme('dark-mode')}
-            >
-              <FaRegMoon
-                style={themeValue === 'dark-mode' ? svgThemeStyles : {}}
-              />
-              Dark
-            </ThemeOption>
+            <Tooltip tooltip={'Change app theme'}>
+              <SettingsButton onClick={handleThemeMenu}>
+                <LuMoonStar />
+              </SettingsButton>
 
-            <ThemeOption
-              style={{
-                color:
-                  themeValue ===
-                  window.matchMedia('(prefers-color-scheme: dark)').matches
-                    ? 'var(--clr-sky-300)'
-                    : '',
-              }}
-              onClick={() =>
-                handleChangeTheme(
-                  window.matchMedia('(prefers-color-scheme: dark)').matches
-                )
-              }
-            >
-              <FaDisplay
-                style={
-                  themeValue ===
-                  window.matchMedia('(prefers-color-scheme: dark)').matches
-                    ? svgThemeStyles
-                    : {}
-                }
-              />
-              System
-            </ThemeOption>
-          </ThemeMenu>
-        </Tooltip>
-      </Details>
-    </StyledBanner>
+              <ThemeMenu
+                ref={menuRef}
+                className={themeMenu ? 'menu-visible' : 'menu-hidden'}
+              >
+                <ThemeOption
+                  style={{
+                    color:
+                      themeValue === 'light-mode' ? 'var(--clr-sky-300)' : '',
+                  }}
+                  onClick={() => handleChangeTheme('light-mode')}
+                >
+                  <LuSun
+                    style={themeValue === 'light-mode' ? svgThemeStyles : {}}
+                  />
+                  Light
+                </ThemeOption>
+
+                <ThemeOption
+                  style={{
+                    color:
+                      themeValue === 'dark-mode' ? 'var(--clr-sky-300)' : '',
+                  }}
+                  onClick={() => handleChangeTheme('dark-mode')}
+                >
+                  <FaRegMoon
+                    style={themeValue === 'dark-mode' ? svgThemeStyles : {}}
+                  />
+                  Dark
+                </ThemeOption>
+
+                <ThemeOption
+                  style={{
+                    color:
+                      themeValue ===
+                      window.matchMedia('(prefers-color-scheme: dark)').matches
+                        ? 'var(--clr-sky-300)'
+                        : '',
+                  }}
+                  onClick={() =>
+                    handleChangeTheme(
+                      window.matchMedia('(prefers-color-scheme: dark)').matches
+                    )
+                  }
+                >
+                  <FaDisplay
+                    style={
+                      themeValue ===
+                      window.matchMedia('(prefers-color-scheme: dark)').matches
+                        ? svgThemeStyles
+                        : {}
+                    }
+                  />
+                  System
+                </ThemeOption>
+              </ThemeMenu>
+            </Tooltip>
+          </Details>
+        </StyledBanner>
+      ) : (
+        <BackgroundPlaceholder
+          height='100%'
+          minHeight='44rem'
+          laptopBigHeight='40rem'
+          laptopHeight='36rem'
+          tabletHeight='32rem'
+          mobileHeight='24rem'
+        />
+      )}
+    </SBannerWrapper>
   );
 }
 

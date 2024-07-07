@@ -1,12 +1,27 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import useLazyLoadBackground from '../hooks/useLazyLoadBackground';
 import styled from 'styled-components';
+import BackgroundPlaceholder from '../components/backgroundPlaceholder';
 
-const StyledHome = styled.div`
+type BackgroundTypes = {
+  $backgroundPath: string;
+};
+
+const SHomeWrapper = styled.div`
   --width: 100dvw;
   --max-width: 100dvw;
-  --min-height: 100vh;
-  --min-height-support: 100dvh;
+  --height: 100vh;
+
+  width: var(--width);
+  max-width: var(--max-width);
+  height: var(--height);
+`;
+
+const StyledHome = styled.div<BackgroundTypes>`
+  --width: 100%;
+  --max-width: 100%;
+  --height: 100%;
 
   display: flex;
   align-items: center;
@@ -16,12 +31,11 @@ const StyledHome = styled.div`
       rgba(0, 0, 0, 0.6),
       rgba(0, 0, 0, 0.8)
     ),
-    url('/images/home.jpg') no-repeat;
+    url(${(props) => props.$backgroundPath}) no-repeat;
   background-size: cover;
   width: var(--width);
   max-width: var(--max-width);
-  min-height: var(--min-height);
-  min-height: var(--min-height-support);
+  height: var(--height);
 
   @media screen and (max-width: 1024px), screen and (max-height: 724px) {
     background-position: center;
@@ -163,20 +177,31 @@ const StartButton = styled.button`
 `;
 
 function Home(): React.ReactElement {
+  const backgroundImage = '/images/home.jpg';
   const navigate = useNavigate();
+  const { isBackgroundLoaded, observedElement } = useLazyLoadBackground({
+    backgroundPath: backgroundImage,
+    threshold: 0.5,
+  });
 
   return (
-    <StyledHome>
-      <Body>
-        <Heading>Are you a true fan of dota?</Heading>
+    <SHomeWrapper ref={observedElement}>
+      {isBackgroundLoaded ? (
+        <StyledHome $backgroundPath={backgroundImage}>
+          <Body>
+            <Heading>Are you a true fan of dota?</Heading>
 
-        <SubHeading>"From players to players"</SubHeading>
+            <SubHeading>"From players to players"</SubHeading>
 
-        <StartButton onClick={() => navigate('/select-level')}>
-          Prove it
-        </StartButton>
-      </Body>
-    </StyledHome>
+            <StartButton onClick={() => navigate('/select-level')}>
+              Prove it
+            </StartButton>
+          </Body>
+        </StyledHome>
+      ) : (
+        <BackgroundPlaceholder height='100vh' />
+      )}
+    </SHomeWrapper>
   );
 }
 
